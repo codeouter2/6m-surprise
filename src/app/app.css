@@ -1,0 +1,727 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600&family=Playfair+Display:ital,wght@0,600;1,600&family=Poppins:wght@300;400;500;600&display=swap');
+
+:host {
+  display: block;
+  min-height: 100vh;
+  font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+  background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 50%, #ffd6e0 100%);
+  color: #4a2c35;
+}
+
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Floating background elements */
+.hearts-bg span {
+  position: fixed;
+  font-size: 1.5rem;
+  opacity: 0.25;
+  animation: floatUp 10s infinite linear;
+  pointer-events: none;
+}
+.hearts-bg span:nth-child(1) { left: 10%; animation-duration: 8s; }
+.hearts-bg span:nth-child(2) { left: 30%; animation-duration: 12s; animation-delay: 2s; }
+.hearts-bg span:nth-child(3) { left: 55%; animation-duration: 9s; animation-delay: 4s; }
+.hearts-bg span:nth-child(4) { left: 75%; animation-duration: 11s; animation-delay: 1s; }
+.hearts-bg span:nth-child(5) { left: 90%; animation-duration: 13s; animation-delay: 3s; }
+
+@keyframes floatUp {
+  0% { transform: translateY(105vh) scale(0.8); opacity: 0; }
+  50% { opacity: 0.35; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
+}
+
+/* Main Card */
+.card {
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  border-radius: 26px;
+  padding: 30px 22px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 20px 45px rgba(214, 51, 108, 0.14);
+  text-align: center;
+  z-index: 2;
+}
+
+.badge {
+  display: inline-block;
+  background: #ffe3e8;
+  color: #d6336c;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', 'Noto Sans Devanagari', serif;
+  color: #801336;
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 0.88rem;
+  color: #7a525e;
+  margin-bottom: 22px;
+}
+
+/* Custom Picker Trigger Buttons */
+.picker-section {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.picker-section label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #5c3742;
+}
+
+.picker-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 13px 16px;
+  background: #fffafb;
+  border: 2px solid #f8bbd0;
+  border-radius: 14px;
+  font-family: inherit;
+  font-size: 0.98rem;
+  font-weight: 500;
+  color: #4a2c35;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.picker-trigger:hover,
+.picker-trigger.active {
+  border-color: #d6336c;
+  background: #fff0f5;
+  box-shadow: 0 4px 12px rgba(214, 51, 108, 0.1);
+}
+
+.trigger-icon {
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.trigger-text {
+  flex: 1;
+  text-align: left;
+}
+
+.trigger-arrow {
+  font-size: 0.75rem;
+  color: #d6336c;
+}
+
+/* ================= CALENDAR ================= */
+.calendar-card {
+  margin-top: 10px;
+  background: #ffffff;
+  border: 1px solid #f8bbd0;
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 12px 28px rgba(128, 19, 54, 0.12);
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.month-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #801336;
+}
+
+.nav-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #fff0f5;
+  color: #d6336c;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.weekdays-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #a67c89;
+  margin-bottom: 8px;
+}
+
+.days-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+}
+
+.day-cell {
+  aspect-ratio: 1;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #4a2c35;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.day-cell:not(.empty):hover {
+  background: #ffe3e8;
+  color: #c2185b;
+}
+
+.day-cell.selected {
+  background: linear-gradient(135deg, #e64980, #c2255c);
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(214, 51, 108, 0.35);
+}
+
+.day-cell.empty {
+  cursor: default;
+}
+
+/* ================= ANALOG WATCH ================= */
+.watch-card {
+  margin-top: 10px;
+  background: #ffffff;
+  border: 1px solid #f8bbd0;
+  border-radius: 20px;
+  padding: 18px 16px;
+  box-shadow: 0 12px 28px rgba(128, 19, 54, 0.12);
+  text-align: center;
+}
+
+.watch-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.digital-readout {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #801336;
+}
+
+.digital-readout button {
+  background: #fff0f5;
+  border: none;
+  border-radius: 8px;
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #8c626e;
+  cursor: pointer;
+}
+
+.digital-readout button.active-unit {
+  background: #d6336c;
+  color: #ffffff;
+}
+
+.ampm-toggle {
+  display: flex;
+  background: #fff0f5;
+  border-radius: 10px;
+  padding: 3px;
+}
+
+.ampm-toggle button {
+  border: none;
+  background: transparent;
+  padding: 5px 10px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #8c626e;
+  cursor: pointer;
+}
+
+.ampm-toggle button.active {
+  background: #d6336c;
+  color: #ffffff;
+}
+
+.watch-bezel {
+  width: 226px;
+  height: 226px;
+  margin: 0 auto 14px;
+  border-radius: 50%;
+  padding: 8px;
+  background: linear-gradient(145deg, #f3c6cf, #d88c9a);
+  box-shadow: 0 10px 24px rgba(128, 19, 54, 0.2), inset 0 2px 4px rgba(255, 255, 255, 0.8);
+}
+
+.watch-dial {
+  position: relative;
+  width: 210px;
+  height: 210px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #ffffff 60%, #fff5f8 100%);
+  box-shadow: inset 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.center-pin {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: #c2255c;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+}
+
+.watch-hand {
+  position: absolute;
+  bottom: 50%;
+  left: calc(50% - 1.5px);
+  width: 3px;
+  height: 68px;
+  background: linear-gradient(to top, #c2255c, #f06595);
+  border-radius: 3px;
+  transform-origin: bottom center;
+  transition: transform 0.3s cubic-bezier(0.4, 2.08, 0.55, 0.44);
+  z-index: 2;
+}
+
+.dial-number {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #5c3742;
+  cursor: pointer;
+  z-index: 3;
+}
+
+.dial-number.selected {
+  background: #d6336c;
+  color: #ffffff;
+  box-shadow: 0 3px 8px rgba(214, 51, 108, 0.4);
+}
+
+.done-clock-btn {
+  background: #ffe3e8;
+  color: #c2185b;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* Journey Slider */
+.journey-box {
+  background: #fff5f7;
+  border: 1px dashed #f48fb1;
+  border-radius: 16px;
+  padding: 18px 16px;
+  margin: 18px 0;
+}
+
+.journey-box label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #c2185b;
+}
+
+.stage-display {
+  margin: 10px 0;
+}
+
+.stage-emoji {
+  font-size: 2.4rem;
+  margin-bottom: 4px;
+}
+
+.stage-display h3 {
+  font-size: 1.12rem;
+  margin-bottom: 2px;
+}
+
+.stage-display p {
+  font-size: 0.82rem;
+  color: #7a525e;
+  margin: 0;
+}
+
+.journey-slider {
+  width: 100%;
+  accent-color: #d6336c;
+  cursor: pointer;
+  margin: 10px 0 6px;
+}
+
+.slider-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #8c626e;
+  font-weight: 500;
+}
+
+.error-msg {
+  color: #e03131;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin: 8px 0;
+}
+
+.primary-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #e64980 0%, #c2255c 100%);
+  color: white;
+  border: none;
+  border-radius: 14px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 8px 20px rgba(214, 51, 108, 0.3);
+  transition: transform 0.2s;
+}
+
+.primary-btn:active {
+  transform: scale(0.98);
+}
+
+/* ================= STAGE 2A: GIFT BOX ================= */
+.surprise-container {
+  width: 100%;
+  max-width: 500px;
+  z-index: 2;
+}
+
+.gift-wrapper,
+.ribbon-letter-wrapper {
+  text-align: center;
+  cursor: pointer;
+  padding: 36px 20px;
+}
+
+.tap-hint {
+  margin-bottom: 36px;
+  animation: pulse 1.6s infinite;
+}
+
+.gift-box {
+  position: relative;
+  width: 160px;
+  height: 140px;
+  margin: 0 auto;
+}
+
+.gift-body {
+  width: 160px;
+  height: 120px;
+  background: linear-gradient(135deg, #f06595, #d6336c);
+  border-radius: 0 0 14px 14px;
+  position: absolute;
+  bottom: 0;
+  box-shadow: 0 15px 30px rgba(194, 37, 92, 0.35);
+}
+
+.ribbon-vertical {
+  width: 28px;
+  height: 100%;
+  background: #ffe066;
+  margin: 0 auto;
+}
+
+.gift-lid {
+  width: 176px;
+  height: 36px;
+  background: #e64980;
+  border-radius: 8px;
+  position: absolute;
+  top: 0;
+  left: -8px;
+  z-index: 3;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+  transition: transform 0.7s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.6s;
+}
+
+.bow {
+  font-size: 2.6rem;
+  position: absolute;
+  top: -34px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gift-box.opened .gift-lid {
+  transform: translateY(-95px) rotate(-18deg);
+  opacity: 0;
+}
+
+/* ================= STAGE 2B: RIBBON-CLOSED LETTER ================= */
+.sealed-envelope {
+  position: relative;
+  width: 260px;
+  height: 170px;
+  margin: 0 auto;
+  background: #fffdf7;
+  border: 2px solid #f3d9c6;
+  border-radius: 16px;
+  box-shadow: 0 18px 38px rgba(128, 19, 54, 0.18);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.sealed-envelope:hover {
+  transform: scale(1.03);
+}
+
+.envelope-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 130px solid transparent;
+  border-right: 130px solid transparent;
+  border-top: 90px solid #f9ebe0;
+  z-index: 1;
+}
+
+.envelope-card-preview {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: #801336;
+  margin-top: 55px;
+  z-index: 1;
+}
+
+/* Silk Ribbon Wrapping the Closed Letter */
+.silk-ribbon-h {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 22px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #e64980, #ff758f, #e64980);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.silk-ribbon-v {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 22px;
+  height: 100%;
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #e64980, #ff758f, #e64980);
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.silk-bow {
+  position: relative;
+  font-size: 3.2rem;
+  z-index: 3;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+/* Untying Animation */
+.sealed-envelope.untying .silk-ribbon-h {
+  transform: translateY(-50%) scaleX(0);
+  opacity: 0;
+}
+
+.sealed-envelope.untying .silk-ribbon-v {
+  transform: translateX(-50%) scaleY(0);
+  opacity: 0;
+}
+
+.sealed-envelope.untying .silk-bow {
+  transform: scale(1.6) rotate(25deg);
+  opacity: 0;
+}
+
+/* ================= STAGE 2C: TYPEWRITER LETTER ================= */
+.reveal-card {
+  background: rgba(255, 255, 255, 0.96);
+  border-radius: 24px;
+  padding: 26px 20px;
+  box-shadow: 0 20px 45px rgba(128, 19, 54, 0.15);
+}
+
+.letter-paper {
+  background: #fffdf9;
+  border: 1px solid #f3e5d8;
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-bottom: 18px;
+  min-height: 260px;
+  cursor: pointer;
+}
+
+.date-stamp {
+  font-size: 0.75rem;
+  color: #a67c52;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.letter-header h2 {
+  font-size: 1.45rem;
+  margin-top: 6px;
+}
+
+.marathi-text {
+  font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  color: #4a3b32;
+  white-space: pre-line;
+  margin: 16px 0;
+}
+
+.type-cursor {
+  display: inline-block;
+  font-weight: bold;
+  color: #d6336c;
+  animation: blink 0.7s infinite;
+}
+
+.type-cursor.hidden {
+  display: none;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.signature {
+  font-family: 'Noto Sans Devanagari', 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: #c2255c;
+  text-align: right;
+  margin-top: 12px;
+}
+
+.skip-hint {
+  font-size: 0.72rem;
+  color: #b08d79;
+  text-align: right;
+  margin-top: 10px;
+}
+
+.play-video-btn {
+  animation: pulse 1.8s infinite;
+}
+
+/* ================= STAGE 2D: VIDEO ================= */
+.video-section h3 {
+  text-align: center;
+  margin-bottom: 14px;
+}
+
+.video-wrapper {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  background: #000;
+}
+
+video {
+  width: 100%;
+  display: block;
+  max-height: 460px;
+  object-fit: contain;
+}
+
+.secondary-btn {
+  width: 100%;
+  padding: 11px;
+  margin-top: 14px;
+  background: #fff0f5;
+  color: #c2185b;
+  border: 1px solid #f8bbd0;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+.fade-in {
+  animation: fadeIn 0.45s ease-out;
+}
+
+.fade-in-up {
+  animation: fadeInUp 0.7s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,0 +1,287 @@
+<div class="app-container">
+  <!-- Floating background hearts -->
+  <div class="hearts-bg">
+    <span>❤️</span><span>✨</span><span>💖</span><span>🌸</span><span>❤️</span>
+  </div>
+
+  <!-- ================= STAGE 1: CALENDAR, WATCH & JOURNEY SLIDER ================= -->
+  @if (currentStage() === 'timeline') {
+    <section class="card fade-in">
+      <div class="badge">6 Month Anniversary</div>
+      <h1>Where Our Story Began</h1>
+      <p class="subtitle">Unlock your surprise by reliving the moment we met.</p>
+
+      <!-- CALENDAR PICKER -->
+      <div class="picker-section">
+        <label>When did we first meet?</label>
+        <button
+          type="button"
+          class="picker-trigger"
+          [class.active]="showCalendar()"
+          (click)="showCalendar.set(!showCalendar()); showClock.set(false)"
+        >
+          <span class="trigger-icon">📅</span>
+          <span class="trigger-text">{{ formattedDateDisplay() }}</span>
+          <span class="trigger-arrow">{{ showCalendar() ? '▲' : '▼' }}</span>
+        </button>
+
+        @if (showCalendar()) {
+          <div class="calendar-card fade-in">
+            <div class="calendar-header">
+              <button type="button" class="nav-btn" (click)="prevMonth()">‹</button>
+              <span class="month-title">{{ monthNames[viewMonth()] }} {{ viewYear() }}</span>
+              <button type="button" class="nav-btn" (click)="nextMonth()">›</button>
+            </div>
+
+            <div class="weekdays-grid">
+              @for (day of weekDays; track day) {
+                <span>{{ day }}</span>
+              }
+            </div>
+
+            <div class="days-grid">
+              @for (day of calendarDays(); track $index) {
+                <button
+                  type="button"
+                  class="day-cell"
+                  [class.empty]="!day"
+                  [class.selected]="isSelectedDay(day)"
+                  [disabled]="!day"
+                  (click)="selectCalendarDay(day)"
+                >
+                  {{ day }}
+                </button>
+              }
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- ANALOG WATCH PICKER -->
+      <div class="picker-section">
+        <label>What time was on the clock?</label>
+        <button
+          type="button"
+          class="picker-trigger"
+          [class.active]="showClock()"
+          (click)="showClock.set(!showClock()); showCalendar.set(false); clockMode.set('hour')"
+        >
+          <span class="trigger-icon">🕰️</span>
+          <span class="trigger-text">{{ meetingTime() }}</span>
+          <span class="trigger-arrow">{{ showClock() ? '▲' : '▼' }}</span>
+        </button>
+
+        @if (showClock()) {
+          <div class="watch-card fade-in">
+            <div class="watch-top-bar">
+              <div class="digital-readout">
+                <button
+                  type="button"
+                  [class.active-unit]="clockMode() === 'hour'"
+                  (click)="clockMode.set('hour')"
+                >
+                  {{ selectedHour().toString().padStart(2, '0') }}
+                </button>
+                <span>:</span>
+                <button
+                  type="button"
+                  [class.active-unit]="clockMode() === 'minute'"
+                  (click)="clockMode.set('minute')"
+                >
+                  {{ selectedMinute().toString().padStart(2, '0') }}
+                </button>
+              </div>
+
+              <div class="ampm-toggle">
+                <button
+                  type="button"
+                  [class.active]="selectedPeriod() === 'AM'"
+                  (click)="togglePeriod('AM')"
+                >
+                  AM
+                </button>
+                <button
+                  type="button"
+                  [class.active]="selectedPeriod() === 'PM'"
+                  (click)="togglePeriod('PM')"
+                >
+                  PM
+                </button>
+              </div>
+            </div>
+
+            <div class="watch-bezel">
+              <div class="watch-dial">
+                <div class="center-pin"></div>
+                <div
+                  class="watch-hand"
+                  [style.transform]="'rotate(' + handRotation() + 'deg)'"
+                ></div>
+
+                @if (clockMode() === 'hour') {
+                  @for (h of hoursDial; track h; let i = $index) {
+                    <button
+                      type="button"
+                      class="dial-number"
+                      [class.selected]="selectedHour() === h"
+                      [style.left]="getDialPosition(i).left"
+                      [style.top]="getDialPosition(i).top"
+                      (click)="selectHour(h)"
+                    >
+                      {{ h }}
+                    </button>
+                  }
+                } @else {
+                  @for (m of minutesDial; track m; let i = $index) {
+                    <button
+                      type="button"
+                      class="dial-number"
+                      [class.selected]="selectedMinute() === m"
+                      [style.left]="getDialPosition(i).left"
+                      [style.top]="getDialPosition(i).top"
+                      (click)="selectMinute(m)"
+                    >
+                      {{ m.toString().padStart(2, '0') }}
+                    </button>
+                  }
+                }
+              </div>
+            </div>
+
+            <button type="button" class="done-clock-btn" (click)="showClock.set(false)">
+              Set Time ✨
+            </button>
+          </div>
+        }
+      </div>
+
+      <!-- JOURNEY SLIDER -->
+      <div class="journey-box">
+        <label>Slide to see how far we've come:</label>
+        <div class="stage-display">
+          <div class="stage-emoji">{{ stageLabels[relationshipStage()].emoji }}</div>
+          <h3>{{ stageLabels[relationshipStage()].title }}</h3>
+          <p>{{ stageLabels[relationshipStage()].desc }}</p>
+        </div>
+
+        <input
+          type="range"
+          min="0"
+          max="3"
+          step="1"
+          [value]="relationshipStage()"
+          (input)="updateStage($event)"
+          class="journey-slider"
+        />
+        <div class="slider-ticks">
+          <span>Unknown</span>
+          <span>Friends</span>
+          <span>Close</span>
+          <span>Us ❤️</span>
+        </div>
+      </div>
+
+      @if (errorMessage()) {
+        <p class="error-msg">{{ errorMessage() }}</p>
+      }
+
+      <button class="primary-btn" (click)="startStory()">
+        Unlock My Surprise ✨
+      </button>
+    </section>
+  }
+
+  <!-- ================= STAGE 2A: GIFT BOX ================= -->
+  @if (currentStage() === 'gift-box') {
+    <section class="surprise-container fade-in">
+      <div class="gift-wrapper" (click)="openGiftBox()">
+        <h2 class="tap-hint">Tap the box to open your gift! 🎁</h2>
+
+        <div class="gift-box" [class.opened]="isBoxOpened()">
+          <div class="gift-lid">
+            <div class="bow">🎀</div>
+          </div>
+          <div class="gift-body">
+            <div class="ribbon-vertical"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ================= STAGE 2B: RIBBON-TIED LETTER ================= -->
+  @if (currentStage() === 'ribbon-letter') {
+    <section class="surprise-container fade-in-up">
+      <div class="ribbon-letter-wrapper" (click)="untieRibbonAndRead()">
+        <h2 class="tap-hint">A small letter for you... Tap to untie the ribbon 🎀</h2>
+
+        <div class="sealed-envelope" [class.untying]="isRibbonUntying()">
+          <div class="envelope-flap"></div>
+          <div class="envelope-card-preview">
+            <span>For You ❤️</span>
+          </div>
+          <!-- Silk Ribbon Cross + Center Bow -->
+          <div class="silk-ribbon-h"></div>
+          <div class="silk-ribbon-v"></div>
+          <div class="silk-bow">🎀</div>
+        </div>
+      </div>
+    </section>
+  }
+
+  <!-- ================= STAGE 2C: TYPEWRITER LETTER ================= -->
+  @if (currentStage() === 'open-letter') {
+    <section class="surprise-container fade-in-up">
+      <div class="reveal-card">
+        <div class="letter-paper" (click)="skipTypewriter()">
+          <div class="letter-header">
+            <span class="date-stamp">{{ formattedDateDisplay() }} • {{ meetingTime() }}</span>
+            <h2>{{ letterTitle }}</h2>
+          </div>
+
+          <p class="letter-text marathi-text">
+            {{ typedLetterText() }}<span class="type-cursor" [class.hidden]="isTypingDone()">|</span>
+          </p>
+
+          @if (isTypingDone()) {
+            <div class="signature fade-in">तुझाच ❤️</div>
+          } @else {
+            <div class="skip-hint">Tap letter to finish typing fast ⏩</div>
+          }
+        </div>
+
+        <!-- Play Video Button appears once typewriter finishes -->
+        @if (isTypingDone()) {
+          <button class="primary-btn play-video-btn fade-in-up" (click)="playGiftVideo()">
+            Play Our 6-Month Video 🎥❤️
+          </button>
+        }
+      </div>
+    </section>
+  }
+
+  <!-- ================= STAGE 2D: GIFT VIDEO PLAYER ================= -->
+  @if (currentStage() === 'video') {
+    <section class="surprise-container fade-in-up">
+      <div class="reveal-card">
+        <div class="video-section">
+          <h3>आमची खास भेट • Our 6-Month Journey 🎥</h3>
+          <div class="video-wrapper">
+            <video
+              controls
+              autoplay
+              playsinline
+              preload="metadata"
+              src="assets/6m.mp4"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <button class="secondary-btn" (click)="currentStage.set('open-letter')">
+            ← Read Letter Again
+          </button>
+        </div>
+      </div>
+    </section>
+  }
+</div>
