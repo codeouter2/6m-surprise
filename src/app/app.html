@@ -215,11 +215,12 @@
       <div class="ribbon-letter-wrapper" (click)="untieRibbonAndRead()">
         <h2 class="tap-hint">A small letter for you... Tap to untie the ribbon 🎀</h2>
 
-        <div class="sealed-envelope" [class.untying]="isRibbonUntying()">
-          <div class="envelope-flap"></div>
-          <div class="envelope-card-preview">
-            <span>For You ❤️</span>
+        <div class="sealed-envelope photo-keepsake" [class.untying]="isRibbonUntying()">
+          <div class="keepsake-photo-frame">
+            <img src="assets/together.jpeg" alt="Us together" class="keepsake-photo" />
+            <div class="keepsake-caption">6 Months of Us ❤️</div>
           </div>
+
           <!-- Silk Ribbon Cross + Center Bow -->
           <div class="silk-ribbon-h"></div>
           <div class="silk-ribbon-v"></div>

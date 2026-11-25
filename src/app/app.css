@@ -724,3 +724,74 @@ video {
   from { opacity: 0; transform: translateY(22px); }
   to { opacity: 1; transform: translateY(0); }
 }
+.sealed-envelope.photo-keepsake {
+  position: relative;
+  display: block;
+  width: min(85vw, 310px);
+  height: auto;
+  padding: 12px;
+  box-sizing: border-box;
+  background: #fffdf9;
+  border: 2px solid #f4c2d1;
+  border-radius: 20px;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.keepsake-photo-frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 14px;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.keepsake-photo {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+}
+
+/* Keep the ribbon and bow centered over the full photo */
+.photo-keepsake .silk-ribbon-v {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+}
+
+.photo-keepsake .silk-ribbon-h {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.photo-keepsake .silk-bow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+}
+
+.keepsake-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 14px 10px 10px;
+  background: linear-gradient(to top, rgba(74, 44, 53, 0.85), transparent);
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  text-align: center;
+  z-index: 4;
+}
